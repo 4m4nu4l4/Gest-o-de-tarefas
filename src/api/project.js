@@ -18,7 +18,7 @@ class ProjectApi {
 
     async alterarProjeto(req, res) {
         const { id } = req.params;
-        const { descricao, dataDeCriacao, AutorId} = req.body;
+        const { nome, descricao, dataDeCriacao, AutorId} = req.body;
         const controller = new ProjectController();
 
         try {
@@ -53,4 +53,4 @@ class ProjectApi {
     }
 }
 
-module.exports = UserApi;
+module.exports = ProjectApi;

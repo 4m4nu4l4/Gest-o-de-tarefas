@@ -54,4 +54,4 @@ class TaskApi {
     }
 }
 
-module.exports = UserApi;
+module.exports = TaskApi;

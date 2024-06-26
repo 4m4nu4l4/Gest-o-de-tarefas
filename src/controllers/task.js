@@ -1,7 +1,7 @@
-const User = require('../model/user');
+const Task = require('../model/task');
 
-class UserController {
-    async criarUsuario(nome, email, senha) {
+class TaskController {
+    async criarAtiv(nome, email, senha) {
         if (
             nome === undefined
             || email === undefined
@@ -10,11 +10,9 @@ class UserController {
             throw new Error('Nome, email e senha são obrigatórios');
         }
 
-        // INSERT INTO users (nome, email, senha) VALUES (nome, email, senha);
-        const user = await User
-            .create({ nome, email, senha });
+        const task = await Task.create({ nome, email, senha });
 
-        return user;
+        return task;
     }
 
     async buscarPorId(id) {
@@ -22,16 +20,16 @@ class UserController {
             throw new Error('Id é obrigatório');
         }
 
-        const user = await User.findByPk(id);
+        const task = await Task.findByPk(id);
 
-        if (!user) {
+        if (!task) {
             throw new Error('Usuário não encontrado');
         }
 
-        return user;
+        return task;
     }
 
-    async alterarUsuario(id, nome, email, senha) {
+    async alterarAtiv(id, nome, email, senha) {
         if (
             id === undefined
             || nome === undefined
@@ -41,30 +39,30 @@ class UserController {
             throw new Error('Id, nome, email e senha são obrigatórios');
         }
 
-        const user = await this.buscarPorId(id);
+        const task = await this.buscarPorId(id);
 
-        user.nome = nome;
-        user.email = email;
-        user.senha = senha;
-        // UPDATE users SET nome = nome, email = email, senha = senha WHERE id = id;
-        user.save();
+        task.nome = nome;
+        task.email = email;
+        task.senha = senha;
+        
+        await task.save();
 
-        return user;
+        return task;
     }
 
-    async deletarUsuario(id) {
+    async deletarAtiv(id) {
         if (id === undefined) {
             throw new Error('Id é obrigatório');
         }
 
-        const user = await this.buscarPorId(id);
+        const task = await this.buscarPorId(id);
 
-        user.destroy();
+        await task.destroy(); 
     }
 
-    async listarUsuarios() {
-        return User.findAll();
+    async listarAtivs() {
+        return Task.findAll();
     }
 }
 
-module.exports = UserController;
+module.exports = TaskController;

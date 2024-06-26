@@ -11,8 +11,7 @@ class UserController {
         }
 
         // INSERT INTO users (nome, email, senha) VALUES (nome, email, senha);
-        const user = await User
-            .create({ nome, email, senha });
+        const user = await User.create({ nome, email, senha });
 
         return user;
     }
@@ -47,7 +46,7 @@ class UserController {
         user.email = email;
         user.senha = senha;
         // UPDATE users SET nome = nome, email = email, senha = senha WHERE id = id;
-        user.save();
+        await user.save();
 
         return user;
     }
@@ -59,7 +58,7 @@ class UserController {
 
         const user = await this.buscarPorId(id);
 
-        user.destroy();
+        await user.destroy(); 
     }
 
     async listarUsuarios() {

@@ -1,72 +1,59 @@
 const Project = require('../model/project');
 
-class ProjectController {
+class ProjetoController {
     async criarProjeto(nome, descricao, dataDeCriacao, AutorId) {
-        if (
-            nome === undefined
-            || descricao === undefined
-            || dataDeCriacao === undefined
-            || AutorId === undefined
-        ) {
-            throw new Error('Nome, email e senha são obrigatórios');
+        if (!nome || !descricao || !dataDeCriacao || !AutorId) {
+            throw new Error('Nome, descrição, data de criação e AutorId são obrigatórios');
         }
 
-        // INSERT INTO users (nome, email, senha) VALUES (nome, email, senha);
-        const user = await User
-            .create({ nome, email, senha });
+        const projeto = await Project.create({ nome, descricao, dataDeCriacao, AutorId });
 
-        return user;
+        return projeto;
     }
 
     async buscarPorId(id) {
-        if (id === undefined) {
+        if (!id) {
             throw new Error('Id é obrigatório');
         }
 
-        const user = await User.findByPk(id);
+        const projeto = await Project.findByPk(id);
 
-        if (!user) {
+        if (!projeto) {
             throw new Error('Projeto não encontrado');
         }
 
-        return user;
+        return projeto;
     }
 
     async alterarProjeto(id, nome, descricao, dataDeCriacao, AutorId) {
-        if (
-            nome === undefined
-            || descricao === undefined
-            || dataDeCriacao === undefined
-            || AutorId === undefined
-        ) {
-            throw new Error('Id, nome, email e senha são obrigatórios');
+        if (!id || !nome || !descricao || !dataDeCriacao || !AutorId) {
+            throw new Error('Id, nome, descrição, data de criação e AutorId são obrigatórios');
         }
 
-        const user = await this.buscarPorId(id);
+        const projeto = await this.buscarPorId(id);
 
-        Project.nome = nome;
-        Projectroject.descricao = descricao;
-        Project.dataDeCriacao = dataDeCriacao;
-        project.AutorId = AutorId;
-        // UPDATE projects SET nome = nome, email = email, senha = senha WHERE id = id;
-        Project.save();
+        projeto.nome = nome;
+        projeto.descricao = descricao;
+        projeto.dataDeCriacao = dataDeCriacao;
+        projeto.AutorId = AutorId;
+        await projeto.save();
 
-        return Project;
+        return projeto;
     }
 
     async deletarProjeto(id) {
-        if (id === undefined) {
+        if (!id) {
             throw new Error('Id é obrigatório');
         }
 
-        const user = await this.buscarPorId(id);
+        const projeto = await this.buscarPorId(id);
 
-        user.destroy();
+        await projeto.destroy();
     }
 
-    async listarProjeto() {
+    async listarProjetos() {
         return Project.findAll();
     }
 }
 
-module.exports = ProjectController;
+module.exports = ProjetoController;
