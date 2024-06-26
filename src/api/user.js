@@ -1,11 +1,6 @@
-/*1. Converter a estrutura de Usuário para MVC.
-2. Converter a estrutura de Postagens para MVC.
-3. Testar as rotas usando ferramentas como Postman ou curl.
-4. Integrar as entidades no banco de dados.
-5. Testar as rotas usando ferramentas como Postman ou curl e verificar o banco de dados.
-6. Aplicar um middleware de validação as rotas de Postagens e as rotas de alteração, listagem e deleção de Usuários.
-7. Testar as rotas usando ferramentas como Postman ou curl.
-*/
+// o email deve ser único para cada usuário
+// a senha deve ser armazenada de forma segura
+
 const UserController = require('../controller/user');
 
 class UserApi {
