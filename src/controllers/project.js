@@ -1,6 +1,6 @@
 const Project = require('../model/project');
 
-class ProjetoController {
+class ProjectController {
     async criarProjeto(nome, descricao, dataDeCriacao, AutorId) {
         if (!nome || !descricao || !dataDeCriacao || !AutorId) {
             throw new Error('Nome, descrição, data de criação e AutorId são obrigatórios');
@@ -56,4 +56,4 @@ class ProjetoController {
     }
 }
 
-module.exports = ProjetoController;
+module.exports = ProjectController;
