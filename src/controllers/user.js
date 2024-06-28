@@ -1,4 +1,19 @@
-const User = require('../model/user');
+/* 
+ Usuário
+    * ID (único)
+    * Nome
+    * Email
+    * Senha (hash)
+    * Data de criação 
+
+### Criação de Usuário
+
+* O sistema deve permitir a criação de novos usuários com nome, email e senha.
+* O email deve ser único para cada usuário.
+* A senha deve ser armazenada de forma segura (hash).*/
+
+// o email deve ser único para cada usuário
+// a senha deve ser armazenada de forma seguraconst User = require('../models/user');
 
 class UserController {
     async criarUsuario(nome, email, senha) {
@@ -8,6 +23,11 @@ class UserController {
             || senha === undefined
         ) {
             throw new Error('Nome, email e senha são obrigatórios');
+        }
+
+        const UsuarioExiste = await user.findOne({ where: { email } });
+        if (UsuarioExiste) {
+            return res.status(400).json({ message: 'Email já cadastrado!' });
         }
 
         // INSERT INTO users (nome, email, senha) VALUES (nome, email, senha);
@@ -58,7 +78,7 @@ class UserController {
 
         const user = await this.buscarPorId(id);
 
-        await user.destroy(); 
+        await user.destroy();
     }
 
     async listarUsuarios() {

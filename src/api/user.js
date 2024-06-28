@@ -1,7 +1,21 @@
+/* 
+ Usuário
+    * ID (único)
+    * Nome
+    * Email
+    * Senha (hash)
+    * Data de criação 
+
+### Criação de Usuário
+
+* O sistema deve permitir a criação de novos usuários com nome, email e senha.
+* O email deve ser único para cada usuário.
+* A senha deve ser armazenada de forma segura (hash).*/
+
 // o email deve ser único para cada usuário
 // a senha deve ser armazenada de forma segura
 
-const UserController = require('../controller/user');
+const UserController = require('../controllers/user');
 
 class UserApi {
     async criarUsuario(req, res) {
@@ -9,6 +23,11 @@ class UserApi {
         const email = req.body.email;
         const senha = req.body.senha;
         const controller = new UserController();
+
+        const UsuarioExiste = await user.findOne({ where: { email } });
+        if (UsuarioExiste) {
+            return res.status(400).json({ message: 'Email já cadastrado!' });
+        } // eu verifico se o usuário existe, tanto no controllers quanto na api?
 
         try {
             const user = await controller.criarUsuario(nome, email, senha);

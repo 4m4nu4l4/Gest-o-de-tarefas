@@ -1,4 +1,19 @@
-const Project = require('../model/project');
+/* 
+ Projeto
+* ID (único)
+* Nome
+* Descrição
+* Data de criação
+* ID do Usuário (relacionamento com a entidade Usuário)
+---------------
+* Usuários autenticados podem criar novos projetos.
+* Cada projeto deve ter um nome e descrição.
+* Usuários podem editar e excluir seus próprios projetos.
+* Usuários podem visualizar uma lista de seus projetos. 
+
+O nome dos projetos deve ter um limite de caracteres (por exemplo, no max 100 caracteres) */
+
+const Project = require('../models/project');
 
 class ProjectController {
     async criarProjeto(nome, descricao, dataDeCriacao, AutorId) {
