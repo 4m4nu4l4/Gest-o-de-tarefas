@@ -20,7 +20,7 @@ class ProjectController {
         if (!nome || !descricao || !dataDeCriacao || !AutorId) {
             throw new Error('Nome, descrição, data de criação e AutorId são obrigatórios');
         }
-
+// fazer um if que valide todos separadamente
         const projeto = await Project.create({ nome, descricao, dataDeCriacao, AutorId });
 
         return projeto;
@@ -42,6 +42,7 @@ class ProjectController {
 
     async alterarProjeto(id, nome, descricao, dataDeCriacao, AutorId) {
         if (!id || !nome || !descricao || !dataDeCriacao || !AutorId) {
+// fazer um if que valide todos separadamente
             throw new Error('Id, nome, descrição, data de criação e AutorId são obrigatórios');
         }
 
@@ -57,10 +58,9 @@ class ProjectController {
     }
 
     async deletarProjeto(id) {
-        if (!id) {
-            throw new Error('Id é obrigatório');
-        }
-
+        // if (!id) {
+        //     throw new Error('Id é obrigatório');
+        // }
         const projeto = await this.buscarPorId(id);
 
         await projeto.destroy();

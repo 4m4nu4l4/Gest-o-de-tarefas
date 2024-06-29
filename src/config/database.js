@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 
 const database = new Sequelize(
-    'Gestao-de-tarefas',
+    'Gestao_de_tarefas',
     'root',
     '',
     { host: 'localhost', dialect: 'mysql' }

@@ -24,7 +24,7 @@ class UserApi {
         const senha = req.body.senha;
         const controller = new UserController();
 
-        const UsuarioExiste = await user.findOne({ where: { email } });
+        const UsuarioExiste = await user.findOne({ where: { email } });  // função do sequelize
         if (UsuarioExiste) {
             return res.status(400).json({ message: 'Email já cadastrado!' });
         } // eu verifico se o usuário existe, tanto no controllers quanto na api?

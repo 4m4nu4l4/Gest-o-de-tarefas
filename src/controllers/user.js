@@ -13,7 +13,9 @@
 * A senha deve ser armazenada de forma segura (hash).*/
 
 // o email deve ser único para cada usuário
-// a senha deve ser armazenada de forma seguraconst User = require('../models/user');
+// a senha deve ser armazenada de forma segura
+
+const User = require('../models/user');
 
 class UserController {
     async criarUsuario(nome, email, senha) {

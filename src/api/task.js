@@ -10,20 +10,19 @@
 
  * Usuários autenticados podem criar novas tarefas associadas a projetos existentes.
  * Cada tarefa deve ter um título, descrição e status inicial como "pendente".
- * Usuários podem editar e excluir suas próprias tarefas.
- * Usuários podem visualizar uma lista de tarefas por projeto com filtros por status.
- * Cada tarefa deve registrar a data de criação automaticamente e permitir a adição de uma data de conclusão */
+ *  */
 
 const TaskController = require('../controllers/task');
 
 class TaskApi {
     async criarAtiv(req, res) {
-        const nome = req.body.nome
-        const titulo = req.body.titulo;
-        const descricao = req.body.descricao;
-        const dataDeCriacao = req.body.dataDeCriacao;
-        const AutorId = req.body.AutorId;
+        const { titulo, descricao, dataDeCriacao, dataDeConclusao, AutorId, ProjetoId } = req.body;
+        const status = 'pendente';
         const controller = new TaskController();
+
+        if (!titulo || !descricao || !ProjetoId) {
+            return res.status(400).send({ error: 'Título, descrição e ID do Projeto são obrigatórios.' });
+        }
 
         try {
             const user = await controller.criarAtiv(nome, titulo, descricao, dataDeCriacao, AutorId);
@@ -35,14 +34,14 @@ class TaskApi {
 
     async alterarAtiv(req, res) {
         const { id } = req.params;
-        const { nome, email, senha } = req.body;
+        const { titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId } = req.body;
         const controller = new TaskController();
 
         try {
-            const user = await controller.alterarAtiv(Number(id), nome, titulo, descricao, dataDeCriacao, AutorId);
-            return res.status(200).send(user);
+            const tarefa = await controller.alterarAtiv(Number(id), titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId);
+            return res.status(200).send(tarefa);
         } catch (error) {
-            return res.status(400).send({ error: error.message })
+            return res.status(400).send({ error: error.message });
         }
     }
 
@@ -62,8 +61,8 @@ class TaskApi {
         const controller = new TaskController();
 
         try {
-            const users = await controller.listarAtiv();
-            return res.status(200).send(users);
+            const tarefas = await controller.listarAtiv();
+            return res.status(200).send(tarefas);
         } catch (error) {
             return res.status(400).send({ error: error.message })
         }
