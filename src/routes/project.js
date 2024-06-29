@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const projectController = require('../controllers/project');
+const projectApi = require('../api/project');
 
 
-router.get('/', projectController.listarProjetos);
-router.get('/:id', projectController.buscarPorId);
-router.post('/', projectController.criarProjeto);
-router.put('/:id', projectController.alterarProjeto);
-router.delete('/:id', projectController.deletarProjeto);
+router.get('/', projectApi.listarProjetos);
+router.get('/:id', projectApi.buscarPorId);
+router.post('/', projectApi.criarProjeto);
+router.put('/:id', projectApi.alterarProjeto);
+router.delete('/:id', projectApi.deletarProjeto);
 
 module.exports = router;
 

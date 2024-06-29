@@ -62,7 +62,7 @@ class UserApi {
         }
     }
 
-    async listarUsuario(req, res) {
+    async listarUsuarios(res) {
         const controller = new UserController();
 
         try {
@@ -72,6 +72,17 @@ class UserApi {
             return res.status(400).send({ error: error.message })
         }
     }
+    async buscarPorId(req, res) {
+        const { id } = req.params;
+        const controller = new ProjectController();
+
+        try {
+            const user = await controller.buscarPorId(id);
+            return res.status(200).send(user);
+        } catch {
+            return res.status(400).send({ error: error.message })
+        }
+    }
 }
 
-module.exports = UserApi;
+module.exports = new UserApi();

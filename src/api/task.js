@@ -57,16 +57,26 @@ class TaskApi {
         }
     }
 
-    async listarAtiv(req, res) {
+    async listarAtivs(req, res) {
         const controller = new TaskController();
 
         try {
-            const tarefas = await controller.listarAtiv();
+            const tarefas = await controller.listarAtivs();
             return res.status(200).send(tarefas);
         } catch (error) {
             return res.status(400).send({ error: error.message })
         }
     }
+    async buscarPorId(req, res) {
+        const controller = new ProjectController();
+
+        try {
+            const task = await controller.buscarPorId(id);
+            return res.status(200).send(task);
+        } catch {
+            return res.status(400).send({ error: error.message })
+        }
+    }
 }
 
-module.exports = TaskApi;
+module.exports = new TaskApi();

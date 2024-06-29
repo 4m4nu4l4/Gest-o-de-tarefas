@@ -33,11 +33,11 @@ class ProjectApi {
 
     async alterarProjeto(req, res) {
         const { id } = req.params;
-        const { nome, descricao, dataDeCriacao, AutorId} = req.body;
+        const { nome, descricao, dataDeCriacao, AutorId } = req.body;
         const controller = new ProjectController();
 
         try {
-            const user = await controller.alterarProjeto(Number(id),nome, descricao, dataDeCriacao, AutorId);
+            const user = await controller.alterarProjeto(Number(id), nome, descricao, dataDeCriacao, AutorId);
             return res.status(200).send(user);
         } catch (error) {
             return res.status(400).send({ error: error.message })
@@ -56,16 +56,29 @@ class ProjectApi {
         }
     }
 
-    async listarProjeto(req, res) {
+    async listarProjetos(req, res) {
         const controller = new ProjectController();
 
         try {
-            const users = await controller.listarProjeto();
+            const users = await controller.listarProjetos(); // buscarPorId
             return res.status(200).send(users);
         } catch (error) {
             return res.status(400).send({ error: error.message })
         }
+
     }
+    async buscarPorId(req, res) {
+        const controller = new ProjectController();
+
+        try {
+            const project = await controller.buscarPorId(id);
+            return res.status(200).send(project);
+        } catch {
+            return res.status(400).send({ error: error.message })
+        }
+    }
+
 }
 
-module.exports = ProjectApi;
+
+module.exports = new ProjectApi();

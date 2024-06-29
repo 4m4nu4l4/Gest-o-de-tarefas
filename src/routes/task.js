@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const taskController = require('../controllers/task');
+const taskApi = require('../api/task');
 
 
-router.get('/', taskController.listarAtivs);
-router.get('/:id', taskController.buscarPorId);
-router.post('/', taskController.criarAtiv);
-router.put('/:id', taskController.alterarAtiv);
-router.delete('/:id', taskController.deletarAtiv);
+router.get('/', taskApi.listarAtivs);
+router.get('/:id', taskApi.buscarPorId);
+router.post('/', taskApi.criarAtiv);
+router.put('/:id', taskApi.alterarAtiv);
+router.delete('/:id', taskApi.deletarAtiv);
 
 module.exports = router;
 
