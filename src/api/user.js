@@ -15,17 +15,11 @@
 // o email deve ser único para cada usuário
 // a senha deve ser armazenada de forma segura
 
-const UserController = require('../controllers/user');
+const controller = require('../controllers/user');
 
 class UserApi {
     async criarUsuario(req, res) {
         const { nome, email, senha } = req.body; 
-        const controller = new UserController();
-
-        const UsuarioExiste = await user.findOne({ where: { email } });  // função do sequelize
-        if (UsuarioExiste) {
-            return res.status(400).json({ message: 'Email já cadastrado!' });
-        }
 
         try {
             const user = await controller.criarUsuario(nome, email, senha);
@@ -38,7 +32,6 @@ class UserApi {
     async alterarUsuario(req, res) {
         const { id } = req.params;
         const { nome, email, senha } = req.body;
-        const controller = new UserController();
 
         try {
             const user = await controller.alterarUsuario(Number(id), nome, email, senha);
@@ -50,7 +43,6 @@ class UserApi {
 
     async deletarUsuario(req, res) {
         const { id } = req.params;
-        const controller = new UserController();
 
         try {
             await controller.deletarUsuario(Number(id));
@@ -61,7 +53,6 @@ class UserApi {
     }
 
     async listarUsuarios(req, res) {
-        const controller = new UserController();
 
         try {
             const users = await controller.listarUsuarios();

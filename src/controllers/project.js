@@ -14,16 +14,18 @@
 O nome dos projetos deve ter um limite de caracteres (por exemplo, no max 100 caracteres) */
 
 const Project = require('../models/project');
-const UserController = require('./user');
 
 class ProjectController {
     async criarProjeto(nome, descricao, dataDeCriacao, AutorId) {
         if (!nome) {
             throw new Error('Nome é obrigatório');
+
         } if (!descricao) {
             throw new Error('Descrição é obrigatória');
+
         } if (!dataDeCriacao) {
             throw new Error('Data de criação é obrigatória');
+
         } if (!AutorId) {
             throw new Error('AutorId é obrigatório');
         }
@@ -52,10 +54,13 @@ class ProjectController {
     async alterarProjeto(id, nome, descricao, dataDeCriacao, AutorId) {
         if (!nome) {
             throw new Error('Nome é obrigatório');
+
         } if (!descricao) {
             throw new Error('Descrição é obrigatória');
+
         } if (!dataDeCriacao) {
             throw new Error('Data de criação é obrigatória');
+
         } if (!AutorId) {
             throw new Error('AutorId é obrigatório');
         }
@@ -70,6 +75,7 @@ class ProjectController {
         projeto.descricao = descricao;
         projeto.dataDeCriacao = dataDeCriacao;
         projeto.AutorId = AutorId;
+
         await projeto.save();
 
         return projeto;
@@ -89,4 +95,4 @@ class ProjectController {
     }
 }
 
-module.exports = ProjectController;
+module.exports = new ProjectController();

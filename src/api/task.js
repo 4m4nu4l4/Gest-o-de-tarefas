@@ -12,21 +12,17 @@
  * Cada tarefa deve ter um título, descrição e status inicial como "pendente".
  *  */
 
-const TaskController = require('../controllers/task');
+const controllerTask = require('../controllers/task');
 
 class TaskApi {
     async criarAtiv(req, res) {
         const { titulo, descricao, dataDeCriacao, dataDeConclusao, AutorId, ProjetoId } = req.body;
         const status = 'pendente';
-        const controller = new TaskController();
-
-        if (!titulo || !descricao || !ProjetoId) {
-            return res.status(400).send({ error: 'Título, descrição e ID do Projeto são obrigatórios.' });
-        }
+        
 
         try {
-            const user = await controller.criarAtiv(nome, titulo, descricao, dataDeCriacao, dataDeConclusao, AutorId);
-            return res.status(201).send(user);
+            const task = await controllerTask.criarAtiv(nome, titulo, descricao, dataDeCriacao, dataDeConclusao, AutorId);
+            return res.status(201).send(task);
         } catch (error) {
             return res.status(400).send({ error: error.message })
         }
@@ -35,10 +31,9 @@ class TaskApi {
     async alterarAtiv(req, res) {
         const { id } = req.params;
         const { titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId } = req.body;
-        const controller = new TaskController();
 
         try {
-            const tarefa = await controller.alterarAtiv(Number(id), titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId);
+            const tarefa = await controllerTask.alterarAtiv(Number(id), titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId);
             return res.status(200).send(tarefa);
         } catch (error) {
             return res.status(400).send({ error: error.message });
@@ -47,10 +42,9 @@ class TaskApi {
 
     async deletarAtiv(req, res) {
         const { id } = req.params;
-        const controller = new TaskController();
 
         try {
-            await controller.deletarAtiv(Number(id));
+            await controllerTask.deletarAtiv(Number(id));
             return res.status(204).send();
         } catch (error) {
             return res.status(400).send({ error: error.message })
@@ -58,20 +52,18 @@ class TaskApi {
     }
 
     async listarAtivs(req, res) {
-        const controller = new TaskController();
-
+       
         try {
-            const tarefas = await controller.listarAtivs();
+            const tarefas = await controllerTask.listarAtivs();
             return res.status(200).send(tarefas);
         } catch (error) {
             return res.status(400).send({ error: error.message })
         }
     }
     async buscarPorId(req, res) {
-        const controller = new ProjectController();
 
         try {
-            const task = await controller.buscarPorId(id);
+            const task = await controllerTask.buscarPorId(id);
             return res.status(200).send(task);
         } catch {
             return res.status(400).send({ error: error.message })

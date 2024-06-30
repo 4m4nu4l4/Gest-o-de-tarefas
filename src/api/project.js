@@ -13,16 +13,16 @@
 
 O nome dos projetos deve ter um limite de caracteres (por exemplo, no max 100 caracteres) */
 
-const ProjectController = require('../controllers/project');
+const controllerProject = require('../controllers/project');
 
 class ProjectApi {
     async criarProjeto(req, res) {
         const {nome, descricao, sataDeCriacao, AutorId} = req.body;
       
-        const controller = new ProjectController();
+     
 
         try {
-            const user = await controller.criarProjeto(nome, descricao, dataDeCriacao, AutorId);
+            const user = await controllerProject.criarProjeto(nome, descricao, dataDeCriacao, AutorId);
             return res.status(201).send(user);
         } catch (error) {
             return res.status(400).send({ error: error.message })
@@ -32,10 +32,9 @@ class ProjectApi {
     async alterarProjeto(req, res) {
         const { id } = req.params;
         const { nome, descricao, dataDeCriacao, AutorId } = req.body;
-        const controller = new ProjectController();
 
         try {
-            const user = await controller.alterarProjeto(Number(id), nome, descricao, dataDeCriacao, AutorId);
+            const user = await controllerProject.alterarProjeto(Number(id), nome, descricao, dataDeCriacao, AutorId);
             return res.status(200).send(user);
         } catch (error) {
             return res.status(400).send({ error: error.message })
@@ -44,10 +43,9 @@ class ProjectApi {
 
     async deletarProjeto(req, res) {
         const { id } = req.params;
-        const controller = new ProjectController();
 
         try {
-            await controller.deletarProjeto(Number(id));
+            await controllerProject.deletarProjeto(Number(id));
             return res.status(204).send();
         } catch (error) {
             return res.status(400).send({ error: error.message })
@@ -55,10 +53,9 @@ class ProjectApi {
     }
 
     async listarProjetos(req, res) {
-        const controller = new ProjectController();
-
+    
         try {
-            const users = await controller.listarProjetos();
+            const users = await controllerProject.listarProjetos();
             return res.status(200).send(users);
         } catch (error) {
             return res.status(400).send({ error: error.message })
@@ -66,10 +63,9 @@ class ProjectApi {
 
     }
     async buscarPorId(req, res) {
-        const controller = new ProjectController();
 
         try {
-            const project = await controller.buscarPorId(id);
+            const project = await controllerProject.buscarPorId(id);
             return res.status(200).send(project);
         } catch {
             return res.status(400).send({ error: error.message })

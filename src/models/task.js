@@ -12,7 +12,8 @@
  * Cada tarefa deve ter um título, descrição e status inicial como "pendente".
  *  */
  
- const database = require('../config/database');
+ const { DataTypes } = require('sequelize');
+const database = require('../config/database');
  
 class Task {
     constructor() {
@@ -23,7 +24,7 @@ class Task {
                 autoIncrement: true
             },
             titulo: {
-                type: database.db.Sequelize.STRING
+                type: DataTypes.STRING(100)
             },
             descrição: {
                 type: database.db.Sequelize.STRING

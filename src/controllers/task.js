@@ -17,13 +17,27 @@
 const Task = require('../models/task');
 
 class TaskController {
-    async criarAtiv(nome, email, senha) {
-        if (
-            nome === undefined
-            || email === undefined
-            || senha === undefined
-        ) {
-            throw new Error('Nome, email e senha são obrigatórios'); // if aqui
+    async criarAtiv(titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId) {
+        if (!titulo) {
+            throw new Error('Nome é obrigatório');
+
+        } if (!descricao) {
+            throw new Error('Descrição é obrigatória');
+
+        } if (!dataDeCriacao) {
+            throw new Error('Data de criação é obrigatória');
+
+        } if (!dataDeConclusao) {
+            throw new Error('Data de conclusão é obrigatória');
+
+        } if (!status) {
+            throw new Error('Status é obrigatória');
+
+        } if (!AutorId) {
+            throw new Error('AutorId é obrigatória');
+
+        } if (!ProjetoId) {
+            throw new Error('ProjetoId é obrigatória');
         }
 
         const task = await Task.create({ titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId });
@@ -46,22 +60,42 @@ class TaskController {
     }
 
     async alterarAtiv(id, titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId) {
-        // if (!id || !titulo || !descricao || !ProjetoId) {
-        //     throw new Error('ID, título, descrição e ID do Projeto são obrigatórios');
-        // }
-        if (id === undefined || id === '') {
+        if (!id) {
             throw new Error('Id é obrigatório');
-        } if (titulo === undefined || titulo === '') {
+
+        } if (!titulo) {
             throw new Error('Título é obrigatório');
-        } if (descricao === undefined || descricao === '') {
+
+        } if (!descricao) {
             throw new Error('Descrição é obrigatória');
+
+        } if (!dataDeCriacao) {
+            throw new Error('Data de Criação é obrigatória');
+
+        } if (!dataDeConclusao) {
+            throw new Error('Data de Conclusão é obrigatória');
+
+        } if (!status) {
+            throw new Error('Status é obrigatória');
+
+        } if (!AutorId) {
+            throw new Error('AutorId é obrigatório');
+            
+        } if (!ProjetoId) {
+            throw new Error('ProjetoId é obrigatório');
         }
+
         const task = await this.buscarPorId(id);
 
-        task.nome = nome;
-        task.email = email;
-        task.senha = senha;
-        
+        task.titulo = titulo;
+        task.descricao = descricao;
+        task.dataDeCriacao = dataDeCriacao;
+        task.dataDeCriacao = dataDeCriacao;
+        task.dataDeConclusao = dataDeConclusao;
+        task.status = status;
+        task.AutorId = AutorId;
+        task.ProjetoId = ProjetoId;
+
         await task.save();
 
         return task;
@@ -74,7 +108,7 @@ class TaskController {
 
         const task = await this.buscarPorId(id);
 
-        await task.destroy(); 
+        await task.destroy();
     }
 
     async listarAtivs() {
@@ -82,4 +116,4 @@ class TaskController {
     }
 }
 
-module.exports = TaskController;
+module.exports = new TaskController();

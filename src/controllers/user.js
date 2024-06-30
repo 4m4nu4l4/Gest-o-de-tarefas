@@ -29,10 +29,11 @@ class UserController {
             throw new Error('Senha é obrigatória');
         }
 
-        const UsuarioExiste = await user.findOne({ where: { email } });
-        if (UsuarioExiste) {
-            return res.status(400).json({ message: 'Email já cadastrado!' });
-        }
+         const UsuarioExiste = await User.findOne({ where: { email } });
+
+         if (UsuarioExiste) {
+             throw new Error('Email já cadastrado!');
+         }
 
         const user = await User.create({ nome, email, senha });
 
