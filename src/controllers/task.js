@@ -23,7 +23,7 @@ class TaskController {
             || email === undefined
             || senha === undefined
         ) {
-            throw new Error('Nome, email e senha são obrigatórios');
+            throw new Error('Nome, email e senha são obrigatórios'); // if aqui
         }
 
         const task = await Task.create({ titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId });
@@ -46,10 +46,16 @@ class TaskController {
     }
 
     async alterarAtiv(id, titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId) {
-        if (!id || !titulo || !descricao || !ProjetoId) {
-            throw new Error('ID, título, descrição e ID do Projeto são obrigatórios');
+        // if (!id || !titulo || !descricao || !ProjetoId) {
+        //     throw new Error('ID, título, descrição e ID do Projeto são obrigatórios');
+        // }
+        if (id === undefined || id === '') {
+            throw new Error('Id é obrigatório');
+        } if (titulo === undefined || titulo === '') {
+            throw new Error('Título é obrigatório');
+        } if (descricao === undefined || descricao === '') {
+            throw new Error('Descrição é obrigatória');
         }
-
         const task = await this.buscarPorId(id);
 
         task.nome = nome;

@@ -19,15 +19,13 @@ const UserController = require('../controllers/user');
 
 class UserApi {
     async criarUsuario(req, res) {
-        const nome = req.body.nome
-        const email = req.body.email;
-        const senha = req.body.senha;
+        const { nome, email, senha } = req.body; 
         const controller = new UserController();
 
         const UsuarioExiste = await user.findOne({ where: { email } });  // função do sequelize
         if (UsuarioExiste) {
             return res.status(400).json({ message: 'Email já cadastrado!' });
-        } // eu verifico se o usuário existe, tanto no controllers quanto na api?
+        }
 
         try {
             const user = await controller.criarUsuario(nome, email, senha);
@@ -62,7 +60,7 @@ class UserApi {
         }
     }
 
-    async listarUsuarios(res) {
+    async listarUsuarios(req, res) {
         const controller = new UserController();
 
         try {

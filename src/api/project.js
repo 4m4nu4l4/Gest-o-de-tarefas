@@ -17,10 +17,8 @@ const ProjectController = require('../controllers/project');
 
 class ProjectApi {
     async criarProjeto(req, res) {
-        const nome = req.body.nome
-        const descricao = req.body.descricao;
-        const dataDeCriacao = req.body.dataDeCriacao;
-        const AutorId = req.body.AutorId;
+        const {nome, descricao, sataDeCriacao, AutorId} = req.body;
+      
         const controller = new ProjectController();
 
         try {
@@ -60,7 +58,7 @@ class ProjectApi {
         const controller = new ProjectController();
 
         try {
-            const users = await controller.listarProjetos(); // buscarPorId
+            const users = await controller.listarProjetos();
             return res.status(200).send(users);
         } catch (error) {
             return res.status(400).send({ error: error.message })

@@ -14,13 +14,22 @@
 O nome dos projetos deve ter um limite de caracteres (por exemplo, no max 100 caracteres) */
 
 const Project = require('../models/project');
+const UserController = require('./user');
 
 class ProjectController {
     async criarProjeto(nome, descricao, dataDeCriacao, AutorId) {
-        if (!nome || !descricao || !dataDeCriacao || !AutorId) {
-            throw new Error('Nome, descrição, data de criação e AutorId são obrigatórios');
+        if (!nome) {
+            throw new Error('Nome é obrigatório');
+        } if (!descricao) {
+            throw new Error('Descrição é obrigatória');
+        } if (!dataDeCriacao) {
+            throw new Error('Data de criação é obrigatória');
+        } if (!AutorId) {
+            throw new Error('AutorId é obrigatório');
         }
-// fazer um if que valide todos separadamente
+        
+        await UserController.buscarPorId(AutorId);
+
         const projeto = await Project.create({ nome, descricao, dataDeCriacao, AutorId });
 
         return projeto;
@@ -41,12 +50,21 @@ class ProjectController {
     }
 
     async alterarProjeto(id, nome, descricao, dataDeCriacao, AutorId) {
-        if (!id || !nome || !descricao || !dataDeCriacao || !AutorId) {
-// fazer um if que valide todos separadamente
-            throw new Error('Id, nome, descrição, data de criação e AutorId são obrigatórios');
+        if (!nome) {
+            throw new Error('Nome é obrigatório');
+        } if (!descricao) {
+            throw new Error('Descrição é obrigatória');
+        } if (!dataDeCriacao) {
+            throw new Error('Data de criação é obrigatória');
+        } if (!AutorId) {
+            throw new Error('AutorId é obrigatório');
         }
 
         const projeto = await this.buscarPorId(id);
+
+        if (!projeto) {
+            throw new Error('Projeto não encontrado');
+        }
 
         projeto.nome = nome;
         projeto.descricao = descricao;
@@ -58,9 +76,9 @@ class ProjectController {
     }
 
     async deletarProjeto(id) {
-        // if (!id) {
-        //     throw new Error('Id é obrigatório');
-        // }
+         if (!id) {
+             throw new Error('Id é obrigatório');
+         }
         const projeto = await this.buscarPorId(id);
 
         await projeto.destroy();

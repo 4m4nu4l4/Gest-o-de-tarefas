@@ -25,7 +25,7 @@ class TaskApi {
         }
 
         try {
-            const user = await controller.criarAtiv(nome, titulo, descricao, dataDeCriacao, AutorId);
+            const user = await controller.criarAtiv(nome, titulo, descricao, dataDeCriacao, dataDeConclusao, AutorId);
             return res.status(201).send(user);
         } catch (error) {
             return res.status(400).send({ error: error.message })

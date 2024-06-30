@@ -1,4 +1,4 @@
-/* 
+/*
  Tarefa
     * ID (único)
     * Título
@@ -7,51 +7,42 @@
     * Data de conclusão (opcional)
     * Status (pendente, em andamento, concluída)
     * ID do Projeto (relacionamento com a entidade Projeto)
-
+ 
  * Usuários autenticados podem criar novas tarefas associadas a projetos existentes.
  * Cada tarefa deve ter um título, descrição e status inicial como "pendente".
  *  */
-
+ 
  const database = require('../config/database');
-
+ 
 class Task {
     constructor() {
-        this.model = database.define('tasks', {
+        this.model = database.db.define('tasks', {
             id: {
-                type: database.Sequelize.INTEGER,
+                type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
             titulo: {
-                type: database.Sequelize.STRING
+                type: database.db.Sequelize.STRING
             },
             descrição: {
-                type: database.Sequelize.STRING
+                type: database.db.Sequelize.STRING
             },
             dataDeCriação: {
-                type: database.Sequelize.DATE
+                type: database.db.Sequelize.DATE
             },
             status: {
-                type: database.Sequelize.STRING
+                type: database.db.Sequelize.STRING
             },
             projectId: {
-                type: database.Sequelize.INTEGER,
-                allowNull: false,
+                type: database.db.Sequelize.INTEGER,
                 references: {
                     model: 'projects',
                     key: 'id',
                 }
             }
         });
-
-        // Criando uma associação entre uma tarefa e o projeto
-        Task.associate = function(model) {
-            Task.belongsTo(model.Project,{
-                foreignKey: 'projectId',
-                as: 'project'
-            });
-        }
     }
 }
-
-module.exports = Task;
+ 
+module.exports = (new Task()).model;

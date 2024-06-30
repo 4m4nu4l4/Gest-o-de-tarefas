@@ -1,4 +1,4 @@
-/* 
+/*
  Projeto
 * ID (único)
 * Nome
@@ -9,40 +9,39 @@
 * Usuários autenticados podem criar novos projetos.
 * Cada projeto deve ter um nome e descrição.
 * Usuários podem editar e excluir seus próprios projetos.
-* Usuários podem visualizar uma lista de seus projetos. 
-
+* Usuários podem visualizar uma lista de seus projetos.
+ 
 O nome dos projetos deve ter um limite de caracteres (por exemplo, no max 100 caracteres) */
+const { DataTypes } = require('sequelize');
 const database = require('../config/database');
-
+ 
 class Project {
     constructor() {
-        this.model = database.define('projects', {
+        this.model = database.db.define('projects', {
             id: {
-                type: database.Sequelize.INTEGER,
+                type: database.db.Sequelize.INTEGER,
                 primaryKey: true,
                 autoIncrement: true
             },
             nome: {
-                type: database.Sequelize.STRING
+                type: database.db.Sequelize.STRING
             },
             descricao: {
-                type: database.Sequelize.STRING
+                type: database.db.Sequelize.STRING
             },
             dataDeCriacao: {
-                type: database.Sequelize.DATE
+                type: DataTypes.DATE
+            },
+            userId: {
+                type: database.db.Sequelize.INTEGER,
+                references: {
+                    model: 'users',
+                    key: 'id',
+                }
             }
-
         });
-        
-        // Cria a associação entre o projeto e a task
-        Project.associate = function(model) {
-            Project.hasMany(model.Task,{
-                foreignKey: 'projectId',
-                as: 'tasks'
-            });
-        }
     }
 }
-
-
-module.exports = Project;
+ 
+ 
+module.exports = (new Project()).model;
