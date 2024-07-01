@@ -3,11 +3,11 @@ const router = express.Router();
 const projectApi = require('../api/project');
 
 
-router.get('/', projectApi.listarProjetos);
-router.get('/:id', projectApi.buscarPorId);
-router.post('/', projectApi.criarProjeto);
-router.put('/:id', projectApi.alterarProjeto);
-router.delete('/:id', projectApi.deletarProjeto);
+router.get('/',authMiddleware, projectApi.listarProjetos);
+router.get('/:id',authMiddleware, projectApi.buscarPorId);
+router.post('/',authMiddleware, projectApi.criarProjeto);
+router.put('/:id',authMiddleware, projectApi.alterarProjeto);
+router.delete('/:id',authMiddleware, projectApi.deletarProjeto);
 
 module.exports = router;
 

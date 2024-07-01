@@ -1,17 +1,3 @@
-/* 
- Tarefa
-    * ID (único)
-    * Título
-    * Descrição
-    * Data de criação
-    * Data de conclusão (opcional)
-    * Status (pendente, em andamento, concluída)
-    * ID do Projeto (relacionamento com a entidade Projeto)
-
- * Usuários autenticados podem criar novas tarefas associadas a projetos existentes.
- * Cada tarefa deve ter um título, descrição e status inicial como "pendente".
- *  */
-
 const controllerTask = require('../controllers/task');
 
 class TaskApi {

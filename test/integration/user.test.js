@@ -1,4 +1,4 @@
-const userRouter = require('../src/routes/user');
+const request = require('supertest');
 const User = require('../src/models/user');
 
 describe("User Integration Tests", () => {

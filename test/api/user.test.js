@@ -1,55 +1,68 @@
-const UserController = require('./userController');
-const User = require('../models/user');
+const request = require('supertest');
+const app = require('../../src/server');
+const bcrypt = require('bcrypt');
+const UserController = require('../../src/controllers/UserController');
 
 describe('UserController', () => {
+  let userController;
 
   beforeAll(() => {
     userController = new UserController();
   });
 
-  test('POST /usuarios - Deve criar um novo usuário com sucesso', async () => {
-    const response = await request(app)
-      .post('/user')
-      .send(userData)
-      .expect(201);
+  it('Post /api/v1/user - Teste criar usuário', async () => {
+    const nome = 'Manu';
+    const email = 'emanuele@gmail.com.br';
+    const senha = '1234';
+    const hashedsenha = await bcrypt.hash(senha, 10);
+    const user = { nome, email, senha: hashedsenha };
 
+    const response = await request(app).post('/api/v1/user/').send(user);
+
+    console.log(response.body);
+    expect(response.statusCode).toBe(201);
     expect(response.body).toHaveProperty('id');
-    expect(response.body.nome).toBe(userData.nome);
-    expect(response.body.email).toBe(userData.email);
+    expect(response.body.nome).toBe(nome);
+    expect(response.body.email).toBe(email);
+
   });
 
+  it('GET /api/v1/user/:id - Teste obter usuário pelo ID', async () => {
+    const response = await request(app).get(`/api/v1/user/${buscarPorId}`);
 
-  test('GET /user/:id - Deve buscar um usuário por ID', async () => {
-    const novoUsuario = await userController.criarUsuario(userData.nome, userData.email, userData.senha);
-
-    const response = await request(app)
-      .get(`/user/${novoUsuario.id}`)
-      .expect(200);
-
-    expect(response.body.id).toBe(novoUsuario.id);
-    expect(response.body.nome).toBe(novoUsuario.nome);
-    expect(response.body.email).toBe(novoUsuario.email);
+    console.log(response.body);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('id', buscarPorId);
+    expect(response.body).toHaveProperty('nome');
+    expect(response.body).toHaveProperty('email');
   });
 
-  test('PUT /user/:id - Deve atualizar um usuário por ID', async () => {
-    const novoUsuario = await userController.criarUsuario(userData.nome, userData.email, userData.senha);
+  it('PUT /api/v1/user/:id - Teste atualizar usuário', async () => {
+    const updatednome = 'Manu';
+    const updatedEmail = 'emanuele@gmail.com.br';
+    const user = { nome: updatednome, email: updatedEmail };
 
-    const response = await request(app)
-      .put(`/user/${createdUser.id}`)
-      .send({ nome: novoNome, email: createdUser.email, senha: createdUser.senha })
-      .expect(200);
+    const response = await request(app).put(`/api/v1/user/${buscarPorId}`).send(user);
 
-    expect(response.body.id).toBe(createdUser.id);
-    expect(response.body.nome).toBe(novoNome);
-    expect(response.body.email).toBe(createdUser.email);
+    console.log(response.body);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('id', buscarPorId);
+    expect(response.body.nome).toBe(updatednome);
+    expect(response.body.email).toBe(updatedEmail);
   });
 
-  test('DELETE /user/:id - Deve excluir um usuário existente', async () => {
-    const response = await request(app)
-    .delete(`/user/${createUser.id}`)
-    .expect(204);
+  it('DELETE /api/v1/user/:id - Teste deletar usuário', async () => {
+    const response = await request(app).delete(`/api/v1/user/${buscarPorId}`);
 
-    const deleteUser = await User.findByPk(createUser.id);
-    expect(deleteUser).toBeNull();
+    console.log(response.body);
+    expect(response.statusCode).toBe(204);
+  });
+
+  it('GET /api/v1/user - Teste listar todos os usuários', async () => {
+    const response = await request(app).get('/api/v1/user');
+
+    console.log(response.body);
+    expect(response.statusCode).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
   });
 });

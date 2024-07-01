@@ -3,7 +3,7 @@ const Project = require('../src/models/project');
 
 describe("Project Integration Tests", () => {
   beforeEach(async () => {
-    await Project.destroy({ where: {}, truncate: true }); // Limpa a tabela antes de cada teste
+    await Project.destroy({ where: {}, truncate: true });
   });
 
   it("Deve adicionar um projeto", async () => {
