@@ -95,8 +95,8 @@ class UserController {
             throw new Error('Email inválido.')
         }
 
-        const senha = bcrypt.compare(senha, user.senha)
-        if (!senha) {
+        const senhaCripto = bcrypt.compare(senha, user.senha)
+        if (!senhaCripto) {
             throw new Error(' Senha inválida')
         }
 

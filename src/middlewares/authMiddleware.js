@@ -5,12 +5,11 @@ const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization'); //pega o Authorization como parâmetro
 
   if (!token) {
-    throw new Error('Token inválido')
+    return res.status(401).send({ error: 'Token não fornecido' });
+  }
 
-};
-
-jwt.verify(token, SECRET_KEY, (e, decoded) => {
-  if (e) {
+jwt.verify(token, SECRET_KEY, (err, decoded) => { // callback 
+  if (err) {
     return res.status(401).send({ error: 'Token inválido' });
   }
   req.userId = decoded.id;

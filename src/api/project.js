@@ -17,7 +17,8 @@ const controllerProject = require('../controllers/project');
 
 class ProjectApi {
     async criarProjeto(req, res) {
-        const {nome, descricao, dataDeCriacao, userId} = req.body;
+        const {nome, descricao, dataDeCriacao} = req.body;
+        const userId = req.user.id; 
 
         try {
             const project = await controllerProject.criarProjeto(nome, descricao, dataDeCriacao, userId);
