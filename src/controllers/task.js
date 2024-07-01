@@ -17,9 +17,9 @@
 const Task = require('../models/task');
 
 class TaskController {
-    async criarAtiv(titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId) {
+    async criarAtiv(titulo, descricao, dataDeCriacao, dataDeConclusao, status) {
         if (!titulo) {
-            throw new Error('Nome é obrigatório');
+            throw new Error('titulo é obrigatório');
 
         } if (!descricao) {
             throw new Error('Descrição é obrigatória');
@@ -33,14 +33,9 @@ class TaskController {
         } if (!status) {
             throw new Error('Status é obrigatória');
 
-        } if (!AutorId) {
-            throw new Error('AutorId é obrigatória');
-
-        } if (!ProjetoId) {
-            throw new Error('ProjetoId é obrigatória');
         }
 
-        const task = await Task.create({ titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId });
+        const task = await Task.create({ titulo, descricao, dataDeCriacao, dataDeConclusao, status});
 
         return task;
     }
@@ -59,7 +54,7 @@ class TaskController {
         return task;
     }
 
-    async alterarAtiv(id, titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId) {
+    async alterarAtiv(id, titulo, descricao, dataDeCriacao, dataDeConclusao, status) {
         if (!id) {
             throw new Error('Id é obrigatório');
 
@@ -78,23 +73,19 @@ class TaskController {
         } if (!status) {
             throw new Error('Status é obrigatória');
 
-        } if (!AutorId) {
-            throw new Error('AutorId é obrigatório');
-            
-        } if (!ProjetoId) {
-            throw new Error('ProjetoId é obrigatório');
         }
 
-        const task = await this.buscarPorId(id);
+        const task = await task.buscarPorId(id);
+
+        if (!task) {
+            throw new Error('Task não encontrada');
+        }
 
         task.titulo = titulo;
         task.descricao = descricao;
         task.dataDeCriacao = dataDeCriacao;
-        task.dataDeCriacao = dataDeCriacao;
         task.dataDeConclusao = dataDeConclusao;
         task.status = status;
-        task.AutorId = AutorId;
-        task.ProjetoId = ProjetoId;
 
         await task.save();
 
@@ -106,7 +97,7 @@ class TaskController {
             throw new Error('Id é obrigatório');
         }
 
-        const task = await this.buscarPorId(id);
+        const task = await task.buscarPorId(id);
 
         await task.destroy();
     }

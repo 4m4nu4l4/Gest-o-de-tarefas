@@ -26,10 +26,13 @@ class Task {
             titulo: {
                 type: DataTypes.STRING(100)
             },
-            descrição: {
+            descricao: {
                 type: database.db.Sequelize.STRING
             },
-            dataDeCriação: {
+            dataDeCriacao: {
+                type: database.db.Sequelize.DATE
+            },
+            dataDeConclusao: {
                 type: database.db.Sequelize.DATE
             },
             status: {

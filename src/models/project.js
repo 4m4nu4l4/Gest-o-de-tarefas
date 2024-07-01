@@ -12,6 +12,7 @@
 * Usuários podem visualizar uma lista de seus projetos.
  
 O nome dos projetos deve ter um limite de caracteres (por exemplo, no max 100 caracteres) */
+
 const { DataTypes } = require('sequelize');
 const database = require('../config/database');
  
@@ -24,7 +25,7 @@ class Project {
                 autoIncrement: true
             },
             nome: {
-                type: database.db.Sequelize.STRING
+                type: DataTypes.STRING(100)
             },
             descricao: {
                 type: database.db.Sequelize.STRING

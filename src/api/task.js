@@ -16,12 +16,11 @@ const controllerTask = require('../controllers/task');
 
 class TaskApi {
     async criarAtiv(req, res) {
-        const { titulo, descricao, dataDeCriacao, dataDeConclusao, AutorId, ProjetoId } = req.body;
+        const { titulo, descricao, dataDeCriacao, dataDeConclusao} = req.body;
         const status = 'pendente';
         
-
         try {
-            const task = await controllerTask.criarAtiv(nome, titulo, descricao, dataDeCriacao, dataDeConclusao, AutorId);
+            const task = await controllerTask.criarAtiv(titulo, descricao, dataDeCriacao, dataDeConclusao, status);
             return res.status(201).send(task);
         } catch (error) {
             return res.status(400).send({ error: error.message })
@@ -30,11 +29,11 @@ class TaskApi {
 
     async alterarAtiv(req, res) {
         const { id } = req.params;
-        const { titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId } = req.body;
+        const { titulo, descricao, dataDeCriacao, dataDeConclusao, status} = req.body;
 
         try {
-            const tarefa = await controllerTask.alterarAtiv(Number(id), titulo, descricao, dataDeCriacao, dataDeConclusao, status, AutorId, ProjetoId);
-            return res.status(200).send(tarefa);
+            const task = await controllerTask.alterarAtiv(Number(id), titulo, descricao, dataDeCriacao, dataDeConclusao, status);
+            return res.status(200).send (task);
         } catch (error) {
             return res.status(400).send({ error: error.message });
         }

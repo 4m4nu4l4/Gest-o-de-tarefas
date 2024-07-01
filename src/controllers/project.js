@@ -16,7 +16,7 @@ O nome dos projetos deve ter um limite de caracteres (por exemplo, no max 100 ca
 const Project = require('../models/project');
 
 class ProjectController {
-    async criarProjeto(nome, descricao, dataDeCriacao, AutorId) {
+    async criarProjeto(nome, descricao, dataDeCriacao, userId) {
         if (!nome) {
             throw new Error('Nome é obrigatório');
 
@@ -26,13 +26,13 @@ class ProjectController {
         } if (!dataDeCriacao) {
             throw new Error('Data de criação é obrigatória');
 
-        } if (!AutorId) {
-            throw new Error('AutorId é obrigatório');
+        } if (!userId) {
+            throw new Error('userId é obrigatório');
         }
         
-        await UserController.buscarPorId(AutorId);
+       // await ProjectController.buscarPorId(ProjectId);
 
-        const projeto = await Project.create({ nome, descricao, dataDeCriacao, AutorId });
+        const projeto = await Project.create({ nome, descricao, dataDeCriacao, userId });
 
         return projeto;
     }
@@ -51,7 +51,21 @@ class ProjectController {
         return projeto;
     }
 
-    async alterarProjeto(id, nome, descricao, dataDeCriacao, AutorId) {
+    async buscarPorStatus(status) {
+        if (!status) {
+            throw new Error('status não encontrado');
+        }
+
+        const projeto = await Project.findAll({ where: { status } });
+
+        if (!projeto) {
+            throw new Error('Projeto não encontrado');
+        }
+
+        return projeto;
+    }
+
+    async alterarProjeto(id, nome, descricao, dataDeCriacao, userId) {
         if (!nome) {
             throw new Error('Nome é obrigatório');
 
@@ -61,8 +75,8 @@ class ProjectController {
         } if (!dataDeCriacao) {
             throw new Error('Data de criação é obrigatória');
 
-        } if (!AutorId) {
-            throw new Error('AutorId é obrigatório');
+        } if (!userId) {
+            throw new Error('userId é obrigatório');
         }
 
         const projeto = await this.buscarPorId(id);
@@ -74,7 +88,7 @@ class ProjectController {
         projeto.nome = nome;
         projeto.descricao = descricao;
         projeto.dataDeCriacao = dataDeCriacao;
-        projeto.AutorId = AutorId;
+        projeto.userId = userId;
 
         await projeto.save();
 

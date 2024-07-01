@@ -1,21 +1,9 @@
-/* 
- Usuário
-    * ID (único)
-    * Nome
-    * Email
-    * Senha (hash)
-    * Data de criação 
-
-### Criação de Usuário
-
-* O sistema deve permitir a criação de novos usuários com nome, email e senha.
-* O email deve ser único para cada usuário.
-* A senha deve ser armazenada de forma segura (hash).*/
-
-// o email deve ser único para cada usuário
-// a senha deve ser armazenada de forma segura
-
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+
+const SECRET_KEY = 'abacaxi';
+const SALT_VALUE = 10;
 
 class UserController {
     async criarUsuario(nome, email, senha) {
@@ -29,13 +17,19 @@ class UserController {
             throw new Error('Senha é obrigatória');
         }
 
-         const UsuarioExiste = await User.findOne({ where: { email } });
+        const UsuarioExiste = await User.findOne({ where: { email } });
 
-         if (UsuarioExiste) {
-             throw new Error('Email já cadastrado!');
-         }
+        if (UsuarioExiste) {
+            throw new Error('Email já cadastrado!');
+        }
 
-        const user = await User.create({ nome, email, senha });
+       const cypherSenha = await bcrypt.hash(senha, SALT_VALUE)
+
+        const user = await User.create({
+            nome,
+            email,
+            senha: cypherSenha,
+        });
 
         return user;
     }
@@ -57,7 +51,7 @@ class UserController {
     async alterarUsuario(id, nome, email, senha) {
         if (id === undefined || id === '') {
             throw new Error('Id é obrigatório');
-            
+
         } if (nome === undefined || nome === '') {
             throw new Error('Nome é obrigatório');
 
@@ -69,7 +63,7 @@ class UserController {
 
         user.nome = nome;
         user.email = email;
-        user.senha = senha;
+        user.senha = await bcrypt.hash(senha, SALT_VALUE)
 
         await user.save();
 
@@ -89,6 +83,28 @@ class UserController {
     async listarUsuarios() {
         return User.findAll();
     }
+
+    async login(email, senha) {
+        if (email === undefined || senha === undefined) {
+            throw new Error('Email e senha são obrigatórios.')
+        }
+
+        const user = await user.findOne({ where: { email } })
+
+        if (!user) {
+            throw new Error('Email inválido.')
+        }
+
+        const senha = bcrypt.compare(senha, user.senha)
+        if (!senha) {
+            throw new Error(' Senha inválida')
+        }
+
+        return jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: 60 * 60 })
+    }
+
+    
 }
+
 
 module.exports = new UserController();
