@@ -34,9 +34,9 @@ describe("User Integration Tests", () => {
 
         const user = await User.create(dataTest);
 
-        // const response = await request(app)
-        //     .get(`/users/${user.id}`)                   precisa disso?
-        //     .expect(200);
+        const response = await request(app)
+            .get(`/users/${user.id}`)                   
+            .expect(200);
 
         const foundUser = response.body;
 
@@ -59,16 +59,16 @@ describe("User Integration Tests", () => {
             senha: "54321"
         };
     
-        // const response = await request(app)
-        //     .put(`/users/${user.id}`)
-        //     .send(updatedData)
-        //     .expect(200);
+        const response = await request(app)
+            .put(`/users/${user.id}`)
+            .send(updatedData)
+            .expect(200);
     
         const updatedUser = response.body;
     
         expect(updatedUser.nome).toBe(updatedData.nome);
         expect(updatedUser.email).toBe(updatedData.email);
-        expect(updatedUser.senha).not.toBe(updatedData.senha); // Senha deve estar criptografada
+        expect(updatedUser.senha).not.toBe(updatedData.senha);
     });
 
     it("Deve deletar um usuário", async () => {
@@ -80,9 +80,9 @@ describe("User Integration Tests", () => {
     
         const user = await User.create(dataTest);
     
-        // await request(app)
-        //     .delete(`/users/${user.id}`)
-        //     .expect(204);
+        await request(app)
+            .delete(`/users/${user.id}`)
+            .expect(204);
     
         const foundUser = await User.findByPk(user.id);
         expect(foundUser).toBeNull();
@@ -104,9 +104,9 @@ describe("User Integration Tests", () => {
         await User.create(dataTest1);
         await User.create(dataTest2);
     
-        // const response = await request(app)
-        //     .get('/users')
-        //     .expect(200);
+        const response = await request(app)
+            .get('/users')
+            .expect(200);
     
         const users = response.body;
         expect(users.length).toBe(2);

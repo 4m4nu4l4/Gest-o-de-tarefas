@@ -1,10 +1,10 @@
 const request = require('supertest');
 const app = require('../../src/server');
 const bcrypt = require('bcrypt');
-const UserController = require('../../src/controllers/UserController');
+const UserController = require('../../src/controllers/user');
 
 describe('UserController', () => {
-  let userController;
+  //let UserController;
 
   beforeAll(() => {
     userController = new UserController();

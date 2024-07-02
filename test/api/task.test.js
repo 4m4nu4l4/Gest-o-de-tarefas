@@ -1,9 +1,9 @@
 const request = require('supertest');
 const app = require('../../src/server');
-const TaskController = require('../../src/controllers/TaskController');
+const TaskController = require('../../src/controllers/task');
 
 describe('TaskController', () => {
-  let taskController;
+  //let taskController;
 
   beforeAll(() => {
     taskController = new TaskController();

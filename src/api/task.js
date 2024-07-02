@@ -39,8 +39,8 @@ class TaskApi {
     async listarAtivs(req, res) {
        
         try {
-            const tarefas = await controllerTask.listarAtivs();
-            return res.status(200).send(tarefas);
+            const tasks = await controllerTask.listarAtivs();
+            return res.status(200).send(tasks);
         } catch (error) {
             return res.status(400).send({ error: error.message })
         }

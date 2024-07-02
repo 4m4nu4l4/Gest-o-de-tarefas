@@ -1,9 +1,9 @@
 const request = require('supertest');
 const app = require('../../src/server');
-const ProjectApi = require('../../src/controllers/ProjectApi');
+const ProjectApi = require('../../src/controllers/project');
 
 describe('ProjectApi', () => {
-  let projectApi;
+ // let projectApi;
 
   beforeAll(() => {
     projectApi = new ProjectApi();

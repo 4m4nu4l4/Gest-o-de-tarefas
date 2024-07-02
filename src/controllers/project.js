@@ -1,83 +1,97 @@
-const request = require('supertest');
-const app = require('../../src/server');
-const ProjectApi = require('../../src/controllers/ProjectApi');
+const Project = require('../models/project');
 
-describe('ProjectApi', () => {
-  let projectApi;
+class ProjectController {
+    async criarProjeto(nome, descricao, dataDeCriacao, userId) {
+        if (!nome) {
+            throw new Error('Nome é obrigatório');
 
-  beforeAll(() => {
-    projectApi = new ProjectApi();
-  });
+        } if (!descricao) {
+            throw new Error('Descrição é obrigatória');
 
-  it('POST /api/v1/project - Teste criar projeto', async () => {
-    const nome = 'Novo Projeto';
-    const descricao = 'Descrição do projeto';
-    const dataDeCriacao = '2023-07-01';
-    const project = { nome, descricao, dataDeCriacao };
+        } if (!dataDeCriacao) {
+            throw new Error('Data de criação é obrigatória');
 
-    const response = await request(app).post('/api/v1/project/').send(project);
+        } if (!userId) {
+            throw new Error('userId é obrigatório');
+        }
+        
+       // await ProjectController.buscarPorId(ProjectId);
 
-    console.log(response.body);
-    expect(response.statusCode).toBe(201);
-    expect(response.body).toHaveProperty('id');
-    expect(response.body.nome).toBe(nome);
-    expect(response.body.descricao).toBe(descricao);
-    expect(response.body.dataDeCriacao).toBe(dataDeCriacao);
-  });
+        const projeto = await Project.create({ nome, descricao, dataDeCriacao, userId });
 
-  it('GET /api/v1/project/:id - Teste obter projeto pelo ID', async () => {
-    const buscarPorId = 1; // Substitua pelo ID que deseja buscar
+        return projeto;
+    }
 
-    const response = await request(app).get(`/api/v1/project/${buscarPorId}`);
+    async buscarPorId(id) {
+        if (!id) {
+            throw new Error('Id é obrigatório');
+        }
 
-    console.log(response.body);
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('id', buscarPorId);
-    expect(response.body).toHaveProperty('nome');
-    expect(response.body).toHaveProperty('descricao');
-  });
+        const projeto = await Project.findByPk(id);
 
-  it('PUT /api/v1/project/:id - Teste atualizar projeto', async () => {
-    const buscarPorId = 1; // Substitua pelo ID que deseja atualizar
-    const updatedNome = 'Projeto Atualizado';
-    const updatedDescricao = 'Descrição atualizada do projeto';
-    const updatedDataDeCriacao = '2023-07-02';
-    const project = { nome: updatedNome, descricao: updatedDescricao, dataDeCriacao: updatedDataDeCriacao };
+        if (!projeto) {
+            throw new Error('Projeto não encontrado');
+        }
 
-    const response = await request(app).put(`/api/v1/project/${buscarPorId}`).send(project);
+        return projeto;
+    }
 
-    console.log(response.body);
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('id', buscarPorId);
-    expect(response.body.nome).toBe(updatedNome);
-    expect(response.body.descricao).toBe(updatedDescricao);
-    expect(response.body.dataDeCriacao).toBe(updatedDataDeCriacao);
-  });
+    async buscarPorStatus(status) {
+        if (!status) {
+            throw new Error('status não encontrado');
+        }
 
-  it('DELETE /api/v1/project/:id - Teste deletar projeto', async () => {
-    const buscarPorId = 1; // Substitua pelo ID que deseja deletar
+        const projeto = await Project.findAll({ where: { status } });
 
-    const response = await request(app).delete(`/api/v1/project/${buscarPorId}`);
+        if (!projeto) {
+            throw new Error('Projeto não encontrado');
+        }
 
-    console.log(response.body);
-    expect(response.statusCode).toBe(204);
-  });
+        return projeto;
+    }
 
-  it('GET /api/v1/project - Teste listar todos os projetos', async () => {
-    const response = await request(app).get('/api/v1/project');
+    async alterarProjeto(id, nome, descricao, dataDeCriacao, userId) {
+        if (!nome) {
+            throw new Error('Nome é obrigatório');
 
-    console.log(response.body);
-    expect(response.statusCode).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
-  });
+        } if (!descricao) {
+            throw new Error('Descrição é obrigatória');
 
-  it('GET /api/v1/project/status/:status - Teste buscar projeto pelo status', async () => {
-    const status = 'ativo'; // Substitua pelo status que deseja buscar
+        } if (!dataDeCriacao) {
+            throw new Error('Data de criação é obrigatória');
 
-    const response = await request(app).get(`/api/v1/project/status/${status}`);
+        } if (!userId) {
+            throw new Error('userId é obrigatório');
+        }
 
-    console.log(response.body);
-    expect(response.statusCode).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
-  });
-});
+        const projeto = await this.buscarPorId(id);
+
+        if (!projeto) {
+            throw new Error('Projeto não encontrado');
+        }
+
+        projeto.nome = nome;
+        projeto.descricao = descricao;
+        projeto.dataDeCriacao = dataDeCriacao;
+        projeto.userId = userId;
+
+        await projeto.save();
+
+        return projeto;
+    }
+
+    async deletarProjeto(id) {
+         if (!id) {
+             throw new Error('Id é obrigatório');
+         }
+        const projeto = await this.buscarPorId(id);
+
+        await projeto.destroy();
+    }
+
+    async listarProjetos() {
+        return Project.findAll();
+    }
+}
+
+module.exports = new ProjectController();
