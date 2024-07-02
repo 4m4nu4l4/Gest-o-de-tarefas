@@ -46,13 +46,17 @@ class UserApi {
     }
 
     async login(req, res) {
-        const { email, senha } = req.body
+        
 
         try {
+            const { email, senha } = req.body
+            console.log(email,senha);
             const token = await controller.login(email, senha)
+            //console.log(token);
 
             res.status(200).send({ token })
         } catch (e) {
+
             res.status(400).send({ error: e.message })
         }
     }

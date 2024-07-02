@@ -23,7 +23,7 @@ class UserController {
             throw new Error('Email já cadastrado!');
         }
 
-       const cypherSenha = await bcrypt.hash(senha, SALT_VALUE)
+        const cypherSenha = await bcrypt.hash(senha, SALT_VALUE)
 
         const user = await User.create({
             nome,
@@ -89,13 +89,16 @@ class UserController {
             throw new Error('Email e senha são obrigatórios.')
         }
 
-        const user = await user.findOne({ where: { email } })
+        const user = await User.findOne({ where: { email } })
+        
 
         if (!user) {
             throw new Error('Email inválido.')
         }
+        console.log(user);
 
         const senhaCripto = bcrypt.compare(senha, user.senha)
+
         if (!senhaCripto) {
             throw new Error(' Senha inválida')
         }
@@ -103,7 +106,7 @@ class UserController {
         return jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: 60 * 60 })
     }
 
-    
+
 }
 
 

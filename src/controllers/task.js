@@ -13,10 +13,12 @@ class TaskController {
         } if (!dataDeCriacao) {
             throw new Error('Data de criação é obrigatória');
 
-        } if (!dataDeConclusao) {
-            throw new Error('Data de conclusão é obrigatória');
+         } 
+        //if (!dataDeConclusao) {
+        //     throw new Error('Data de conclusão é obrigatória');
 
-        } if (!status) {
+        // } 
+        if (!status) {
             throw new Error('Status é obrigatória');
 
         }
@@ -53,10 +55,11 @@ class TaskController {
         } if (!dataDeCriacao) {
             throw new Error('Data de Criação é obrigatória');
 
-        } if (!dataDeConclusao) {
-            throw new Error('Data de Conclusão é obrigatória');
+        } //if (!dataDeConclusao) {
+        //     throw new Error('Data de Conclusão é obrigatória');
 
-        } if (!status) {
+        // } 
+        if (!status) {
             throw new Error('Status é obrigatória');
 
         }
